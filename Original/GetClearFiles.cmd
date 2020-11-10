@@ -24,10 +24,13 @@ echo Начат поиск. Ожидайте ...
 
 if exist "..\CopyScript.txt" del /f /a "..\CopyScript.txt"
 
-For /F "UseBackQ delims=" %%s in ("List.txt") do (
+For /F "delims=" %%s in ('^< List.txt find /v ":" 2^>NUL') do (
   for /F "delims=" %%a in ('dir /b /s /a-d "%systemroot%\%%s" 2^>NUL') do (
     call :GetFile "%%~a"
   )
+)
+For /F "delims=" %%s in ('^< List.txt find ":" 2^>NUL') do (
+  call :GetFile "%%~s"
 )
 goto :eof
 

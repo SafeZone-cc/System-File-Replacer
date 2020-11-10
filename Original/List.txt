@@ -1,1 +1,8 @@
+; будет искать файлы comctl32.dll рекурсивно в папке %SystemRoot% (c:\Windows)
 comctl32.dll
+
+; возьмёт конкретный файл
+c:\windows\notepad.exe
+
+; можно указывать в кавычках (это не имеет значения)
+"c:\windows\system32\sfc.exe"

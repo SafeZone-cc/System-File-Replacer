@@ -1,2 +1,4 @@
 "Original\comctl32.dll" "C:\Windows\System32\comctl32.dll"
 "Original\comctl32 (2).dll" "C:\Windows\SysWOW64\comctl32.dll"
+"Original\notepad.exe" "c:\Windows\notepad.exe"
+"Original\sfc.exe" "c:\Windows\System32\sfc.exe"
