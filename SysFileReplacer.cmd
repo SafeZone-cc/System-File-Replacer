@@ -2,6 +2,8 @@
 SetLocal EnableExtensions
 cd /d "%~dp0"
 
+chcp 866 >nul
+
 echo.
 echo System File Replacer Script by Alex Dragokas [SafeZone.cc]
 echo.
@@ -85,6 +87,8 @@ for /f "UseBackQ delims=" %%a in ("CopyScript.txt") do call :CheckCRC %%a
 )
 
 call :Warning
+
+call :OemToUtf16 Result.txt
 
 echo.
 echo Все операции завершены.
@@ -201,9 +205,9 @@ call :LogResult %errorlevel%
 echo Сравнение контрольных сумм
 echo Сравнение контрольных сумм  >> Result.txt
 (
-FC /B "%~1" "%~2"
+FC /B "%~1" "%~2" >NUL && echo FC: различия не найдены.|| echo FC: Ошибка. Найдены отличия.
 ) >> Result.txt
-FC /B "%~1" "%~2"
+FC /B "%~1" "%~2" >NUL && echo FC: различия не найдены.|| echo FC: Ошибка. Найдены отличия.
 
 Exit /B
 
@@ -255,7 +259,7 @@ exit /B
 exit /B
 
 :CheckCRC
-  FC /B "%~1" "%~2" && echo Успех: "%~2">> Result.txt|| echo Ошибка !!! : "%~2">> Result.txt
+  FC /B "%~1" "%~2" >NUL && echo Успех: "%~2">> Result.txt|| echo Ошибка !!! : "%~2">> Result.txt
 exit /B
 
 :CheckEnvironRedirect
@@ -279,3 +283,9 @@ exit /B
         exit
   ))
 Exit /B 0
+
+:OemToUtf16 %1-File
+  chcp 1251 >NUL & cmd /d /a /c set /p=яю<NUL > "%~1.utf16"
+  chcp 866 >NUL & cmd /d /u /c type "%~1" >> "%~1.utf16"
+  move /y "%~1.utf16" "%~1"
+exit /b
