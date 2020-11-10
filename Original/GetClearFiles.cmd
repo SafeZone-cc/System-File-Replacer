@@ -32,14 +32,20 @@ For /F "delims=" %%s in ('^< List.txt find /v ":" 2^>NUL') do (
 For /F "delims=" %%s in ('^< List.txt find ":" 2^>NUL') do (
   call :GetFile "%%~s"
 )
+echo FINISHED.
+pause
 goto :eof
 
 :GetFile
   call :GetEmptyName "%~dp0" "%~nx1" NewName
-  copy "%~f1" "%NewName%"
-  echo "Original\%NewName%" "%~f1">> "..\CopyScript.txt"
+  copy /y "%~f1" "%NewName%" 2>NUL >NUL
+  if exist "%NewName%" (
+    echo "Original\%NewName%" "%~f1">> "..\CopyScript.txt"
+	REM echo [OK] "%~f1"
+  ) else (
+    echo [FAILED] Не удалось получить файл "%~f1"
+  )
 exit /B
-
 
 :GetEmptyName %1-Folder %2-FileName %3-Var.Return %4-Optional.System.Num
   Set "Num=%~4"
